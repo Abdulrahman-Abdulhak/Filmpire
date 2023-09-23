@@ -1,8 +1,11 @@
 import React from 'react';
+import { Box, CircularProgress } from '@mui/material';
+
+import { useGetMoviesQuery } from '../../services/TMDB';
 
 function Movies() {
   return (
-    <div>Movies</div>
+    <div className=''>Movies</div>
   );
 }
 
