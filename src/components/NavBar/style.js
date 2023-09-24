@@ -34,4 +34,12 @@ export default makeStyles((theme) => ({
       },
     },
   },
+  listItem: {
+    '& img': {
+      height: '2em',
+      width: '2em',
+      objectFit: 'contain',
+      objectPosition: 'center',
+    },
+  },
 }));

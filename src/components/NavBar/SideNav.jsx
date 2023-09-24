@@ -1,15 +1,18 @@
 import React from 'react';
 
 import { useTheme } from '@emotion/react';
-import { Box, CircularProgress, Divider, Drawer, List, ListItemButton, ListItemText, ListSubheader, useMediaQuery } from '@mui/material';
+import { Box, CircularProgress, Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import useStyles from './style';
+import catGenres from '../../assets/cat_genre';
 import { useGetGenresQuery } from '../../services/TMDB';
+import { selectCatOrGenre } from '../../features/currentCatOrGenre';
 
 const categories = [
   { label: 'Popular', value: 'popular' },
-  { label: 'Top Rated', value: 'top-rated' },
+  { label: 'Top Rated', value: 'top_rated' },
   { label: 'Upcoming', value: 'upcoming' },
 ];
 
@@ -18,8 +21,8 @@ function SideNav({ menu }) {
   const theme = useTheme();
   const isMobile = useMediaQuery('(max-width:600px)');
 
+  const dispatch = useDispatch();
   const { data, isLoading } = useGetGenresQuery();
-
   // console.log(data);
 
   return (
@@ -49,8 +52,12 @@ function SideNav({ menu }) {
               key={`cat:${value}`}
               onClick={() => {
                 menu.toggleMenu(false);
+                dispatch(selectCatOrGenre(value));
               }}
             >
+              <ListItemIcon className={classes.listItem}>
+                <img src={catGenres[label.toLowerCase()]} alt="" />
+              </ListItemIcon>
               <ListItemText primary={label} />
             </ListItemButton>
           )))}
@@ -70,8 +77,12 @@ function SideNav({ menu }) {
                 key={`genre:${id}`}
                 onClick={() => {
                   menu.toggleMenu(false);
+                  dispatch(selectCatOrGenre(id));
                 }}
               >
+                <ListItemIcon className={classes.listItem}>
+                  <img src={catGenres[name.toLowerCase()]} alt="" />
+                </ListItemIcon>
                 <ListItemText primary={name} />
               </ListItemButton>
             )))

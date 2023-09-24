@@ -1,17 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
+import { useSelector } from 'react-redux';
 import { useGetMoviesQuery } from '../../../services/TMDB';
 
 import { MovieCard } from '..';
 import useStyles from './styles';
 
 function MoviesList() {
-  const { data, error, isLoading, refetch } = useGetMoviesQuery();
+  const [page, setPage] = useState(1);
+  const { catNameOrGenreId } = useSelector((store) => store.currentCatOrGenre);
+  const { data, error, isFetching, refetch } = useGetMoviesQuery({ catNameOrGenreId, page });
+
   const classes = useStyles();
 
-  console.log(data);
-
-  if (isLoading) {
+  if (isFetching) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center">
         <CircularProgress size="4rem" />
