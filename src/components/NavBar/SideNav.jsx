@@ -1,18 +1,13 @@
 import React from 'react';
 
 import { useTheme } from '@emotion/react';
-import { Divider, Drawer, List, ListItemButton, ListItemText, ListSubheader, useMediaQuery } from '@mui/material';
+import { Box, CircularProgress, Divider, Drawer, List, ListItemButton, ListItemText, ListSubheader, useMediaQuery } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 import useStyles from './style';
+import { useGetGenresQuery } from '../../services/TMDB';
 
 const categories = [
-  { label: 'Popular', value: 'popular' },
-  { label: 'Top Rated', value: 'top-rated' },
-  { label: 'Upcoming', value: 'upcoming' },
-];
-
-const genres = [
   { label: 'Popular', value: 'popular' },
   { label: 'Top Rated', value: 'top-rated' },
   { label: 'Upcoming', value: 'upcoming' },
@@ -22,6 +17,10 @@ function SideNav({ menu }) {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery('(max-width:600px)');
+
+  const { data, isLoading } = useGetGenresQuery();
+
+  // console.log(data);
 
   return (
     <Drawer
@@ -61,16 +60,22 @@ function SideNav({ menu }) {
       <div>
         <List>
           <ListSubheader>Genres</ListSubheader>
-          {genres.map((({ label, value }) => (
-            <ListItemButton
-              key={`cat:${value}`}
-              onClick={() => {
-                menu.toggleMenu(false);
-              }}
-            >
-              <ListItemText primary={label} />
-            </ListItemButton>
-          )))}
+          {
+            isLoading ? (
+              <Box display="flex" justifyContent="center" alignItems="center">
+                <CircularProgress />
+              </Box>
+            ) : data.genres.map((({ id, name }) => (
+              <ListItemButton
+                key={`genre:${id}`}
+                onClick={() => {
+                  menu.toggleMenu(false);
+                }}
+              >
+                <ListItemText primary={name} />
+              </ListItemButton>
+            )))
+          }
         </List>
       </div>
     </Drawer>

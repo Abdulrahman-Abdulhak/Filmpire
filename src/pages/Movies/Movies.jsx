@@ -1,11 +1,15 @@
 import React from 'react';
-import { Box, CircularProgress } from '@mui/material';
+import useStyles from '../styles';
 
-import { useGetMoviesQuery } from '../../services/TMDB';
+import { MoviesList } from '../../components/Movies';
 
 function Movies() {
+  const classes = useStyles();
+
   return (
-    <div className=''>Movies</div>
+    <div className={classes.movies}>
+      <MoviesList />
+    </div>
   );
 }
 

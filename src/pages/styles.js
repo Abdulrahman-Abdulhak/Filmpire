@@ -11,4 +11,8 @@ export default makeStyles((theme) => ({
       paddingLeft: 0,
     },
   },
+  movies: {
+    margin: '10px',
+    marginBottom: 0,
+  },
 }));
