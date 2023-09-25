@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 import useStyles from './style';
 import SideNav from './SideNav';
+import SearchField from '../SearchField/SearchField';
 
 function NavBar() {
   const [menuOpened, setMenuOpened] = useState(false);
@@ -38,7 +39,7 @@ function NavBar() {
           >
             {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
-          {!isMobile && 'Search...'}
+          {!isMobile && <SearchField />}
           {isAuthenticated
             ? (
               <Button
@@ -57,6 +58,7 @@ function NavBar() {
             ) : (
               <Button color="inherit" onClick={() => {}}>Login &nbsp; <AccountCircle /></Button>
             )}
+          {isMobile && <SearchField />}
         </Toolbar>
       </AppBar>
       <SideNav menu={{ menuOpened, toggleMenu }} />

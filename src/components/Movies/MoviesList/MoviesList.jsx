@@ -8,8 +8,8 @@ import useStyles from './styles';
 
 function MoviesList() {
   const [page, setPage] = useState(1);
-  const { catNameOrGenreId } = useSelector((store) => store.currentCatOrGenre);
-  const { data, error, isFetching, refetch } = useGetMoviesQuery({ catNameOrGenreId, page });
+  const { catNameOrGenreId, searchQuery } = useSelector((store) => store.currentCatOrGenre);
+  const { data, error, isFetching, refetch } = useGetMoviesQuery({ catNameOrGenreId, page, searchQuery });
 
   const classes = useStyles();
 

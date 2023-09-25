@@ -25,6 +25,11 @@ function SideNav({ menu }) {
   const { data, isLoading } = useGetGenresQuery();
   // console.log(data);
 
+  const selectNav = (val) => {
+    menu.toggleMenu(false);
+    dispatch(selectCatOrGenre(val));
+  };
+
   return (
     <Drawer
       classes={{ paper: classes.sidePaper }}
@@ -50,10 +55,7 @@ function SideNav({ menu }) {
           {categories.map((({ label, value }) => (
             <ListItemButton
               key={`cat:${value}`}
-              onClick={() => {
-                menu.toggleMenu(false);
-                dispatch(selectCatOrGenre(value));
-              }}
+              onClick={() => selectNav(value)}
             >
               <ListItemIcon className={classes.listItem}>
                 <img src={catGenres[label.toLowerCase()]} alt="" />
@@ -75,10 +77,7 @@ function SideNav({ menu }) {
             ) : data.genres.map((({ id, name }) => (
               <ListItemButton
                 key={`genre:${id}`}
-                onClick={() => {
-                  menu.toggleMenu(false);
-                  dispatch(selectCatOrGenre(id));
-                }}
+                onClick={() => selectNav(id)}
               >
                 <ListItemIcon className={classes.listItem}>
                   <img src={catGenres[name.toLowerCase()]} alt="" />
