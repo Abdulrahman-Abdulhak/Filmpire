@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useTheme } from '@emotion/react';
 import { Box, CircularProgress, Divider, Drawer, List, ListItemButton, ListItemIcon, ListItemText, ListSubheader, useMediaQuery } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import useStyles from './style';
@@ -23,11 +23,14 @@ function SideNav({ menu }) {
 
   const dispatch = useDispatch();
   const { data, isLoading } = useGetGenresQuery();
-  // console.log(data);
+  const navigate = useNavigate();
 
   const selectNav = (val) => {
     menu.toggleMenu(false);
     dispatch(selectCatOrGenre(val));
+    navigate('/', {
+      replace: true,
+    });
   };
 
   return (

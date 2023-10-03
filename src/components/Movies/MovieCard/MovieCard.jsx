@@ -1,8 +1,9 @@
-import { Grid, Grow, Rating, Tooltip, Typography } from '@mui/material';
+import { Grid, Grow, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import React from 'react';
 
 import useStyles from './styles';
+import Rating from '../../Rating/Rating';
 
 function MovieCard({ movie, i }) {
   const classes = useStyles();
@@ -21,11 +22,12 @@ function MovieCard({ movie, i }) {
             }
           />
           <Typography className={classes.title} variant="h5">{movie.title}</Typography>
-          <Tooltip disableTouchListener title={`${movie.vote_average} / 10`}>
-            <div>
-              <Rating readOnly value={movie.vote_average / 2} precision={0.1} />
-            </div>
-          </Tooltip>
+          <Rating
+            readOnly
+            value={movie.vote_average / 2}
+            precision={0.1}
+            tooltip={`${movie.vote_average} / 10`}
+          />
         </Link>
       </Grow>
     </Grid>

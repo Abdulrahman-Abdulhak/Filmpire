@@ -35,10 +35,18 @@ export const tmdbApi = createApi({
         return `movie/popular?page=${page}`;
       },
     }),
+    getMovieDetails: builder.query({
+      query: ({ id }) => `movie/${id}`,
+    }),
+    getMovieActors: builder.query({
+      query: ({ id }) => `https://api.themoviedb.org/3/movie/${id}/credits`,
+    }),
   }),
 });
 
 export const {
   useGetMoviesQuery,
   useGetGenresQuery,
+  useGetMovieDetailsQuery,
+  useGetMovieActorsQuery,
 } = tmdbApi;

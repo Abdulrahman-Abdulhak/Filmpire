@@ -11,6 +11,7 @@ import SideNav from './SideNav';
 import SearchField from '../SearchField/SearchField';
 import { createSessionId, getUserBySessionId, requestToken } from '../../utils/auth';
 import { setUser, userSelector } from '../../features/auth';
+import { URLs } from '../../constants/constants';
 
 function NavBar() {
   const [menuOpened, setMenuOpened] = useState(false);
@@ -18,26 +19,30 @@ function NavBar() {
   const theme = useTheme();
   const isMobile = useMediaQuery('(max-width:600px)');
 
-  const { isAuthenticated } = useSelector(userSelector);
+  const { isAuthenticated, user } = useSelector(userSelector);
   const dispatch = useDispatch();
 
   const token = localStorage.getItem('request_token');
   const sessionIdLocal = localStorage.getItem('session_id');
   useEffect(async () => {
     if (sessionIdLocal && sessionIdLocal.toLocaleLowerCase() !== 'undefined') {
-      const user = await getUserBySessionId(sessionIdLocal);
-      dispatch(setUser(user));
+      const userRes = await getUserBySessionId(sessionIdLocal);
+      dispatch(setUser(userRes));
 
       return;
     }
 
     if (!token || token.toLocaleLowerCase() === 'undefined') return;
     const sessionId = await createSessionId();
-    const user = await getUserBySessionId(sessionId);
-    dispatch(setUser(user));
+    const userRes = await getUserBySessionId(sessionId);
+    dispatch(setUser(userRes));
   }, [token, sessionIdLocal]);
 
   const toggleMenu = (state) => setMenuOpened((prev) => state ?? !prev);
+
+  const handleLogin = () => {
+    requestToken();
+  };
 
   return (
     <>
@@ -66,18 +71,18 @@ function NavBar() {
               <Button
                 color="inherit"
                 LinkComponent={Link}
-                to="/profile/:id"
+                to={`/profile/${user.id}`}
                 style={{ gap: 8 }}
               >
                 {!isMobile && 'My Movies'}
                 <Avatar
                   style={{ width: 30, height: 30 }}
                   alt="your profile picture"
-                  src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png"
+                  src={URLs.profilePlaceholder}
                 />
               </Button>
             ) : (
-              <Button color="inherit" onClick={requestToken}>Login &nbsp; <AccountCircle /></Button>
+              <Button color="inherit" onClick={handleLogin}>Login &nbsp; <AccountCircle /></Button>
             )}
           {isMobile && <SearchField />}
         </Toolbar>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Button, CircularProgress, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { useGetMoviesQuery } from '../../../services/TMDB';
 
-import { MovieCard } from '..';
+import MovieCard from '../MovieCard/MovieCard';
 import useStyles from './styles';
+import Loading from '../../async/Loading';
+import Error from '../../async/Error';
 
 function MoviesList() {
   const [page, setPage] = useState(1);
@@ -13,22 +15,9 @@ function MoviesList() {
 
   const classes = useStyles();
 
-  if (isFetching) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center">
-        <CircularProgress size="4rem" />
-      </Box>
-    );
-  }
+  if (isFetching) return <Loading />;
 
-  if (error) {
-    return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-        <Typography variant="subtitle1">Something went wrong</Typography>
-        <Button onClick={refetch}>Try Again</Button>
-      </Box>
-    );
-  }
+  if (error) return <Error retry={refetch} />;
 
   if (!data.results.length) {
     return (
