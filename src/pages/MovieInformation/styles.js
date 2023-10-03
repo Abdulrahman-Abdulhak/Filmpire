@@ -40,9 +40,15 @@ export default makeStyles((theme) => ({
       height: '2rem',
     },
   },
+  genreButton: {
+    gap: '1rem',
+    color: theme.palette.mode === 'light' ? 'black !important' : 'white !important',
+  },
   buttons: {
     display: 'flex',
     justifyContent: 'space-around',
+    flexWrap: 'wrap',
+    gap: '1rem',
     paddingInline: padding,
     width: '100%',
   },

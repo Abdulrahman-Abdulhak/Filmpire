@@ -15,7 +15,6 @@ function SearchField() {
   const [caller] = useDebounce(() => {
     if (!query || !query.length) return;
 
-    console.log(query);
     dispatch(searchMovie(query));
   }, delay, [query]);
 

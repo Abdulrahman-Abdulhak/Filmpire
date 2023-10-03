@@ -24,3 +24,5 @@ export const catOrGenre = createSlice({
 export const { selectCatOrGenre, searchMovie } = catOrGenre.actions;
 
 export default catOrGenre.reducer;
+
+export const catOrGenreSelector = (store) => store.currentCatOrGenre;

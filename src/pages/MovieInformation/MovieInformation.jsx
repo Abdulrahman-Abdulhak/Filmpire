@@ -1,9 +1,9 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box, ButtonGroup, Button, Typography, Grid, useMediaQuery } from '@mui/material';
-import { Language, Movie, LocalMovies } from '@mui/icons-material';
+import { Favorite, FavoriteBorder, PlusOne, Remove, Language, Movie, LocalMovies, ArrowBack } from '@mui/icons-material';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useGetMovieDetailsQuery } from '../../services/TMDB';
 import Loading from '../../components/async/Loading';
 import Error from '../../components/async/Error';
@@ -15,16 +15,37 @@ import { monthsShort } from '../../constants/date';
 import genreIcons from '../../assets/cat_genre';
 import MovieActors from '../../components/Actors/MovieActors';
 import { userSelector } from '../../features/auth';
+import { isNotEmpty } from '../../utils/object';
+import { selectCatOrGenre } from '../../features/currentCatOrGenre';
 
 function MovieInformation() {
+  // * hooks goes here
+
   const { id } = useParams();
   const { data, isFetching, error, refetch } = useGetMovieDetailsQuery({ id });
+
   const sm = useMediaQuery('(width < 1200px)');
   const classes = useStyles();
 
   const userStore = useSelector(userSelector);
+  const dispatch = useDispatch();
 
-  console.log(userStore.user);
+  const navigate = useNavigate();
+
+  const isFavorite = true;
+  const isWishlisted = true;
+
+  // * functions goes here
+
+  const handleGenreSelect = (genreId) => {
+    dispatch(selectCatOrGenre(genreId));
+    navigate('/');
+  };
+  const goBack = () => navigate(-1);
+  const handleFavorite = () => {};
+  const handleWishList = () => {};
+
+  // * render results goes here
 
   if (isFetching) return <Loading />;
 
@@ -80,11 +101,11 @@ function MovieInformation() {
             gap="1rem"
             flexWrap="wrap"
           >
-            {genres.map(({ name, index }) => (
-              <div key={`${name}:${index}`}>
-                <img src={genreIcons[name.toLowerCase()]} alt="" />
-                {name}
-              </div>
+            {genres.map((genre) => (
+              <Button className={classes.genreButton} key={`${genre.name}:${id}`} variant="text" onClick={() => handleGenreSelect(genre.id)}>
+                <img src={genreIcons[genre.name.toLowerCase()]} alt="" />
+                {genre.name}
+              </Button>
             ))}
           </Box>
           <Box alignSelf="flex-start">
@@ -119,6 +140,28 @@ function MovieInformation() {
             <Button endIcon={<LocalMovies />}>Trailler</Button>
           </ButtonGroup>
           <ButtonGroup variant="outlined" className={classes.buttonGroup}>
+            {isNotEmpty(userStore.user)
+              ? (
+                <>
+                  <Button
+                    onClick={handleFavorite}
+                    endIcon={!isFavorite
+                      ? <Favorite />
+                      : <FavoriteBorder />}
+                  >
+                    {!isFavorite ? 'Favorite' : 'Unfavorite'}
+                  </Button>
+                  <Button
+                    onClick={handleWishList}
+                    endIcon={!isWishlisted
+                      ? <PlusOne />
+                      : <Remove />}
+                  >
+                    {!isWishlisted ? 'wishlist' : 'wishlisted'}
+                  </Button>
+                </>
+              ) : null}
+            <Button onClick={goBack} endIcon={<ArrowBack />}>back</Button>
           </ButtonGroup>
         </Grid>
       </Grid>

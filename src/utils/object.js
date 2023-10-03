@@ -11,3 +11,12 @@ export const clone = (obj, cloneInto = {}) => {
 
   return clonePointer;
 };
+
+export const isEmpty = (obj = {}) => {
+  if (!obj) return true;
+
+  const entries = Object.entries(obj);
+  return entries.length === 0;
+};
+
+export const isNotEmpty = (obj = {}) => !isEmpty(obj);

@@ -15,7 +15,6 @@ function MovieActors({ id }) {
   if (error) return <Error retry={refetch} />;
 
   const { cast } = data;
-  console.log(cast);
 
   return (
     <ImageList className={classes.list}>
